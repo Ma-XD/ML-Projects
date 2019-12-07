@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import random
 
 
-def take_part_off_array(IT, n, y):
+def take_part_of_array(IT, n, y):
     partIT = list()
     party = list()
     for i in range(n):
@@ -170,13 +170,13 @@ if __name__ == "__main__":
         ITest = np.asarray(ITest)
 
         for i in range(10):
-            part_off_ITR, part_off_ytrainR = take_part_off_array(ITR, 200, ytrainR)
-            part_off_ITW, part_off_ytrainW = take_part_off_array(ITW, 200, ytrainW)
+            part_of_ITR, part_of_ytrainR = take_part_of_array(ITR, 200, ytrainR)
+            part_of_ITW, part_of_ytrainW = take_part_of_array(ITW, 200, ytrainW)
             # part_of_ITR = np.random.choice(ITR, 300)
             # part_of_ITW = np.random.choice(ITW, 300)
 
-            ITrain = part_off_ITR + part_off_ITW
-            ytrain = part_off_ytrainR + part_off_ytrainW
+            ITrain = part_of_ITR + part_of_ITW
+            ytrain = part_of_ytrainR + part_of_ytrainW
             ITrain, ytrain = shuffle(ITrain, ytrain)  # mixing
             yvtrain = convert_y_to_vect(ytrain)  # convert digits to vectors
             yvtrain = np.asarray(yvtrain)  # lists to ndarrays
