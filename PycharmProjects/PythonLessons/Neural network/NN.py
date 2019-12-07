@@ -149,8 +149,8 @@ def predict_y(W, b, X, n_layers):
 
 
 if __name__ == "__main__":
-    for j in range(10):
-        print("=======================>", j)
+    # for j in range(10):
+        # print("=======================>", j)
         # load data and scale
         ytest = []
         ytrainR = []
