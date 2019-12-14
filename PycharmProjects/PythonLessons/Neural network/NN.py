@@ -1,6 +1,3 @@
-from sklearn.datasets import load_digits
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
 import numpy as np
@@ -105,7 +102,7 @@ def train_nn(nn_structure, X, y, W, b, iter_num=600, alpha=0.05):
     #  print("y -", len(y))
     m = len(y)
     avg_cost_func = []
-    # print('Starting gradient descent for {} iterations'.format(iter_num))
+    print('Starting gradient descent for {} iterations'.format(iter_num))
     while cnt < iter_num:
         # if cnt%100 == 0:
         # print('Iteration {} of {}'.format(cnt, iter_num))
@@ -155,19 +152,18 @@ if __name__ == "__main__":
         ytest = []
         ytrainR = []
         ytrainW = []
-        ITR, ytrainR = mfcc.get_features("./input_train_right/", ytrainR, [1])
-        ITW, ytrainW = mfcc.get_features("./input_train_wrong/", ytrainW, [0])
-        IOR, ytest = mfcc.get_features("./input_test_right/", ytest, [1])
-        IOW, ytest = mfcc.get_features("./input_test_wrong/", ytest, [0])
+        ITR, yrainR = mfcc.get_features("./data/input_train_right/", ytrainR, [1])
+        ITW, ytrainW = mfcc.get_features("./data/input_train_wrong/", ytrainW, [0])
+        IOR, ytest = mfcc.get_features("./data/input_test_right/", ytest, [1])
+        IOW, ytest = mfcc.get_features("./data/input_test_wrong/", ytest, [0])
+        ITest = IOR + IOW
+        ITest, ytest = shuffle(ITest, ytest)  # mixing
+        ytest = np.asarray(ytest)  # lists to ndarrays
+        ITest = np.asarray(ITest)
+
         nn_structure = [11, 15, 10]  # setup the NN structure
         W = list()
         b = list()
-
-        ITest = IOR + IOW
-        ITest, ytest = shuffle(ITest, ytest)  # mixing
-        yvtest = convert_y_to_vect(ytest)  # convert digits to vectors
-        yvtest = np.asarray(yvtest)  # lists to ndarrays
-        ITest = np.asarray(ITest)
 
         for i in range(10):
             part_of_ITR, part_of_ytrainR = take_part_of_array(ITR, 200, ytrainR)
@@ -183,10 +179,12 @@ if __name__ == "__main__":
             ITrain = np.asarray(ITrain)
             W, b, avg_cost_func = train_nn(nn_structure, ITrain, yvtrain, W, b)  # train the NN
 
-        # plot the avg_cost_func
-        plt.plot(avg_cost_func)
-        plt.ylabel('Average J')
-        plt.xlabel('Iteration number')
+            # plot the avg_cost_func
+            plt.plot(avg_cost_func)
+            plt.ylabel('Average J')
+            plt.xlabel('Iteration number')
+            plt.show()
+
         # get the prediction accuracy and print
         y_pred = predict_y(W, b, ITest, 3)
         print(' - Prediction accuracy is {}%'.format(accuracy_score(ytest, y_pred) * 100))
